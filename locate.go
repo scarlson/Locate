@@ -2,8 +2,6 @@ package locate
 
 import (
 	"encoding/json"
-	"flag"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -91,6 +89,7 @@ func (l *Location) Json() (string, error) {
 }
 
 func WhereAmI() (*Location, error) {
+	// WhereAmI returns the location for localhost
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
@@ -122,33 +121,4 @@ func WhereIsThis(ip string) (*Location, error) {
 		return nil, err
 	}
 	return loc.sanitize(), nil
-}
-
-func main() {
-	ip := flag.String("ip", "", "IP Address")
-	format := flag.String("format", "text", "Output json/text")
-	flag.Parse()
-	loc := &Location{}
-	var err error
-	if *ip == "" {
-		loc, err = WhereAmI()
-		if err != nil {
-			panic(err)
-		}
-	} else {
-		loc, err = WhereIsThis(*ip)
-		if err != nil {
-			panic(err)
-		}
-	}
-	if *format == "json" {
-		jsonloc, err := json.Marshal(loc)
-		if err != nil {
-			panic(err)
-		}
-		jl := string(jsonloc)
-		fmt.Println(jl)
-	} else {
-		fmt.Println(loc.Latitude, loc.Longitude)
-	}
 }
