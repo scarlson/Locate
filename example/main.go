@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/scarlson/Locate"
+	"github.com/scarlson/locate"
 )
 
 func main() {
